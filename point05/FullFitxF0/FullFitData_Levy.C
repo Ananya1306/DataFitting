@@ -29,21 +29,29 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
 void FullFitData_Levy(){
 
    TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
+  TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF1_phi10");
 
    TF1 *fitFcn = new TF1("fitFcn",fitFunction,0.0,1.0,7);
     fitFcn->SetLineColor(kMagenta);
 
 //Parameters are set from the values received from the individual fit codes
-   fitFcn->SetParameter(0,7.97643e+01); //levy amplitude
+//For xF0 Data
+/*   fitFcn->SetParameter(0,7.97643e+01); //levy amplitude
    fitFcn->SetParameter(1,7.04444e-02); //levy scale
    fitFcn->SetParameter(2,2.96776e-02);  //levy location
-
    fitFcn->SetParameter(3,1.89946e+03); //skgaus amplitude
    fitFcn->SetParameter(4,1.22966e-01); //skgaus mean
    fitFcn->SetParameter(5,4.13624e-02); //skgaus sigma
    fitFcn->SetParameter(6,1.58433e+01); //skgaus skewness   
-  
+*/  
+//For xF1 Data
+   fitFcn->SetParameter(0,8.95512e+01); //levy amplitude
+   fitFcn->SetParameter(1,2.08074e-01); //levy scale
+   fitFcn->SetParameter(2,2.47977e-02);  //levy location
+   fitFcn->SetParameter(3,2.44366e+03); //skgaus amplitude
+   fitFcn->SetParameter(4,1.28733e-01); //skgaus mean
+   fitFcn->SetParameter(5,4.09378e-02); //skgaus sigma
+   fitFcn->SetParameter(6,1.44953e+01); //skgaus skewness 
    //h->Draw("ep");
    h->Fit("fitFcn","V+","ep");
    fitFcn->Draw("same");

@@ -29,22 +29,33 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
 void FullFitEmbedding(){
 
    TFile *f = new TFile("../BothTreeOutAll_XfTestpoint05.root");
-   TH1F *h = (TH1F*)f->Get("pi0MxFPhi_0");
+   TH1F *h = (TH1F*)f->Get("pi0MxFPhi_1");
 
    TF1 *fitFcn = new TF1("fitFcn",fitFunction,0.0,1.0,8);
     fitFcn->SetLineColor(kMagenta);
 
 //Parameters are set from the values received from the individual fit codes
+//For xF0 fir embedding
+/*   
    fitFcn->SetParameter(0,1.09232e+00); //weibull shape
    fitFcn->SetParameter(1,4.66928e-01); //weibull scale
    fitFcn->SetParameter(2,3.50184e-02);  //weibull location
    fitFcn->SetParameter(3,1.99299e+02); //weibull amplitude
-
    fitFcn->SetParameter(4,1.18098e+03); //skgaus amplitude
    fitFcn->SetParameter(5,1.45611e-01); //skgaus mean
    fitFcn->SetParameter(6,5.06436e-02); //skgaus sigma
    fitFcn->SetParameter(7,-7.98515e-02); //skgaus skewness   
-  
+*/
+//For xF1 fit embedding
+   fitFcn->SetParameter(0,1.17218e+00); //weibull shape
+   fitFcn->SetParameter(1,5.21039e-01); //weibull scale
+   fitFcn->SetParameter(2,5.48693e-02);  //weibull location
+   fitFcn->SetParameter(3,2.37380e+02); //weibull amplitude
+   fitFcn->SetParameter(4,1.08243e+03); //skgaus amplitude
+   fitFcn->SetParameter(5,1.42599e-01); //skgaus mean
+   fitFcn->SetParameter(6,-4.59123e-02); //skgaus sigma
+   fitFcn->SetParameter(7,5.53844e+00); //skgaus skewness   
+   
    h->Fit("fitFcn","V+","ep");
    fitFcn->Draw("same");
 

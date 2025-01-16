@@ -15,20 +15,26 @@ double weibull_pdf(double *x, double *par) {
 void WeibullFunc(){
 
    TFile *f = new TFile("../BothTreeOutAll_XfTestpoint05.root");
-   TH1F *h = (TH1F*)f->Get("pi0MxFPhi_0");
+   TH1F *h = (TH1F*)f->Get("pi0MxFPhi_2");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
-   for(int i=11; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
+   TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
+   for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
    hBack->Draw(); 
   
 //for xF0
    TF1 *fw = new TF1("fw",weibull_pdf,0,1,4); 
-   //fw->SetParameters(0.9,1,0.04,300); //Shape, scale, location, amplitude
-   fw->SetParameters(0.8,1.4,0.06,295);
-
-/*   TF1 *fw = new TF1("fw",weibull_pdf,0,1,4);  
-   fw->SetParameters(0.8,1,0.02,350); //Shape, scale, location, amplitude
-*/    
+   //fw->SetParameters(0.8,1.4,0.06,295); //pi0MxFPhi_0 fit initial parameter
+   // fw->SetParameters(2.5,1.5,0.06,400); //pi0MxFPhi_1 fit initial parameter
+    fw->SetParameters(2.5,1.5,0.01,400); //pi0MxFPhi_2 fit initial parameter
   fw->Draw("same");
   hBack->Fit(fw,"R");
+
+  double shape = fw->GetParameter(0);
+  double scale = fw->GetParameter(1);
+  double location = fw->GetParameter(2);
+  double amplitude = fw->GetParameter(3);
+
+  TF1 *fwfit = new TF1("fwfit",weibull_pdf,0,1,4); fwfit->SetParameters(shape,scale,location,amplitude);
+  TCanvas *c2 = new TCanvas(); hBackFit->Draw("lpe"); fwfit->Draw("same");
 
 } 

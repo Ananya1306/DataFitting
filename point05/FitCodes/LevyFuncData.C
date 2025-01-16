@@ -11,20 +11,30 @@ Double_t levy(Double_t *x, Double_t *par){
 
    return (par[0])*(sqrt(par[1]/2*TMath::Pi())*exp(-par[1]/(2*(x[0]-par[2])))*(1/(pow((x[0]-par[2]),1.5)))); //Levy Distribution
 
-
+//par[0] is Ampltitude, par[1] is Scale, par[2] is location
 }
 
 void LevyFuncData(){
 
    TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
+   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF2_phi10");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
-   for(int i=8; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
+   TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
+   for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);} //for xF0 and xF1 i starts from 8
    hBack->Draw(); 
   
    TF1 *fl = new TF1("fl",levy,0,1,3); 
-   fl->SetParameters(1600,0.05,0.001); //par[0] is Ampltitude, par[1] is Scale, par[2] is location
+   //fl->SetParameters(1600,0.05,0.001); //pi0M_BDown_xF0_phi10 fit initial parameters 
+   //fl->SetParameters(900,0.09,0.02); ////pi0M_BDown_xF1_phi10 fit initial parameters 
+   fl->SetParameters(900,0.09,0.02); ////pi0M_BDown_xF2_phi10 fit initial parameters
    fl->Draw("same");
    hBack->Fit(fl,"R");
+
+   double amplitude = fl->GetParameter(0);
+   double scale = fl->GetParameter(1);
+   double location = fl->GetParameter(2);
+
+   TF1 *flfit = new TF1("fwfit",levy,0,1,4); flfit->SetParameters(amplitude,scale,location);
+  TCanvas *c2 = new TCanvas(); hBackFit->Draw("lpe"); flfit->Draw("same");
 
 } 

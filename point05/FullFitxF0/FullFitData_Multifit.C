@@ -34,26 +34,39 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
 void FullFitData_Multifit(){
 
    TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
+   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF1_phi10");
 
    TF1 *fitFcn = new TF1("fitFcn",fitFunction,0.0,1.0,12);
     fitFcn->SetLineColor(kMagenta);
 
 //Parameters are set from the values received from the individual fit codes
-   fitFcn->SetParameter(0,9.54518e-01); //weibull shape
+//For xF0 data fits
+/*   fitFcn->SetParameter(0,9.54518e-01); //weibull shape
    fitFcn->SetParameter(1,3.45811e-01); //weibull scale
    fitFcn->SetParameter(2,2.50755e-02);  //weibull location
    fitFcn->SetParameter(3,1.54742e+02); //weibull amplitude
-
    fitFcn->SetParameter(4,1.14003e+03); //bg skgaus amplitude
    fitFcn->SetParameter(5,5.91274e-02); //bg skgaus mean
    fitFcn->SetParameter(6,1.37819e-02); //bg skgaus sigma
-   fitFcn->SetParameter(7,5.17982e+01); //bg skgaus skewness   
-  
+   fitFcn->SetParameter(7,5.17982e+01); //bg skgaus skewness
    fitFcn->SetParameter(8,1.89946e+03); //sig skgaus amplitude
    fitFcn->SetParameter(9,1.22966e-01); //sig skgaus mean
    fitFcn->SetParameter(10,4.13624e-02); //sig skgaus sigma
-   fitFcn->SetParameter(11,1.58433e+01); //sig skgaus skewness
+   fitFcn->SetParameter(11,1.58433e+01); //sig skgaus skewness   
+*/
+//For xF1 data fits
+   fitFcn->SetParameter(0,9.35713e-01); //weibull shape
+   fitFcn->SetParameter(1,5.45800e-01); //weibull scale
+   fitFcn->SetParameter(2,8.49999e-02);  //weibull location
+   fitFcn->SetParameter(3,1.67076e+02); //weibull amplitude
+   fitFcn->SetParameter(4,1.56234e+03); //bg skgaus amplitude
+   fitFcn->SetParameter(5,7.22559e-02); //bg skgaus mean
+   fitFcn->SetParameter(6,1.13332e-02); //bg skgaus sigma
+   fitFcn->SetParameter(7,1.16980e+01); //bg skgaus skewness  
+   fitFcn->SetParameter(8,2.44366e+03); //sig skgaus amplitude
+   fitFcn->SetParameter(9,1.28733e-01); //sig skgaus mean
+   fitFcn->SetParameter(10,4.09378e-02); //sig skgaus sigma
+   fitFcn->SetParameter(11,1.44953e+01); //sig skgaus skewness
  
    //h->Draw();
    h->Fit("fitFcn","V+","ep");

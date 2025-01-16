@@ -29,21 +29,32 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
 void FullFitEmbedding_Levy(){
 
    TFile *f = new TFile("../BothTreeOutAll_XfTestpoint05.root");
-   TH1F *h = (TH1F*)f->Get("pi0MxFPhi_0");
+   TH1F *h = (TH1F*)f->Get("pi0MxFPhi_1");
 
    TF1 *fitFcn = new TF1("fitFcn",fitFunction,0.0,1.0,7);
     fitFcn->SetLineColor(kMagenta);
 
 //Parameters are set from the values received from the individual fit codes
+//For xF0 fit    
+/*
    fitFcn->SetParameter(0,1.08797e+02); //levy amplitude
    fitFcn->SetParameter(1,3.46086e-01); //levy scale
    fitFcn->SetParameter(2,-5.47413e-03);  //levy location
-
    fitFcn->SetParameter(3,1.18098e+03); //skgaus amplitude
    fitFcn->SetParameter(4,1.45611e-01); //skgaus mean
    fitFcn->SetParameter(5,5.06436e-02); //skgaus sigma
    fitFcn->SetParameter(6,-7.98515e-02); //skgaus skewness   
+*/  
+//For xF1 fit
   
+   fitFcn->SetParameter(0,1.37715e+02); //levy amplitude
+   fitFcn->SetParameter(1,5.02110e-01); //levy scale
+   fitFcn->SetParameter(2,5.55608e-03);  //levy location
+   fitFcn->SetParameter(3,1.08243e+03); //skgaus amplitude
+   fitFcn->SetParameter(4,1.42599e-01); //skgaus mean
+   fitFcn->SetParameter(5,-4.59123e-02); //skgaus sigma
+   fitFcn->SetParameter(6,5.53844e+00); //skgaus skewness 
+
    //h->Draw("ep");
    h->Fit("fitFcn","V+","ep");
    fitFcn->Draw("same");
