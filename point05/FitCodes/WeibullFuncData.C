@@ -18,14 +18,16 @@ void WeibullFuncData(){
    TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF2_phi10");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
-   for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
+   for(int i=8; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}
    hBack->Draw(); 
   
-//for xF0
+//for xF0 and xF1
    TF1 *fw = new TF1("fw",weibull_pdf,0,1,4); 
    //fw->SetParameters(0.4,1.5,0.05,450); // pi0M_BDown_xF0_phi10 fit initial parameter
    //fw->SetParameters(10,15,0.06,800); //pi0M_BDown_xF1_phi10 fit initial parameter
-   fw->SetParameters(10,15,0.06,800); //pi0M_BDown_xF2_phi10 fit initial parameter
+//for xF2 define the ranges of the function
+   //TF1 *fw = new TF1("fw",weibull_pdf,0.2,1,4);  
+   fw->SetParameters(0.6,3.0,0.1,100); //pi0M_BDown_xF2_phi10 fit initial parameter
    fw->Draw("same");
    hBack->Fit(fw,"R");
 

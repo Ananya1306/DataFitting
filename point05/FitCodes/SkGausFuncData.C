@@ -18,13 +18,24 @@ void SkGausFuncData(){
    TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF2_phi10");
    TH1F *hSig = (TH1F*)h->Clone("hSig");
    //for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
-   hSig->Draw(); 
+   hSig->Draw("ep"); 
   
-   TF1 *fsg = new TF1("fsg",SkGausPeak,0.09,0.2,4); 
+   TF1 *fsg = new TF1("fsg",SkGausPeak,0.11,0.25,4); 
   // fsg->SetParameters(2500,0.130,0.008,4); //pi0M_BDown_xF0_phi10 fit initial parameter
   // fsg->SetParameters(2500,0.130,0.008,4); //pi0M_BDown_xF1_phi10 fit initial parameter
-   fsg->SetParameters(2500,0.130,0.008,4); //pi0M_BDown_xF2_phi10 fit initial parameter
+  fsg->SetParameters(1200,0.130,0.05,-4); //pi0M_BDown_xF2_phi10 fit initial parameter
   fsg->Draw("same");
-  hSig->Fit(fsg,"R");
+  hSig->Fit(fsg,"R+");
 
+  TF1 *fsgDraw = new TF1("fsgDraw",SkGausPeak,0.0,1.0,4);  //Defining a function for drawing purposes
+  fsgDraw->SetParameters(fsg->GetParameter(0),fsg->GetParameter(1),fsg->GetParameter(2),fsg->GetParameter(3));
+  fsgDraw->SetLineColor(kBlue); fsgDraw->Draw("same");
+
+/*  TCanvas *c2 = new TCanvas();
+  TF1 *fsg_test1 = new TF1("fsg_test1",SkGausPeak,-1.0,1.0,4); fsg_test1->SetParameters(10,0,0.5,4); fsg_test1->SetLineColor(kBlue); fsg_test1->Draw();
+  TF1 *fsg_test2 = new TF1("fsg_test2",SkGausPeak,-1.0,1.0,4); fsg_test2->SetParameters(10,0,0.5,1); fsg_test2->SetLineColor(kOrange); fsg_test2->Draw("same");
+  TF1 *fsg_test3 = new TF1("fsg_test3",SkGausPeak,-1.0,1.0,4); fsg_test3->SetParameters(10,0,0.5,0); fsg_test3->SetLineColor(kMagenta); fsg_test3->Draw("same");
+  TF1 *fsg_test4 = new TF1("fsg_test4",SkGausPeak,-1.0,1.0,4); fsg_test4->SetParameters(10,0,0.5,-1); fsg_test4->SetLineColor(kGreen); fsg_test4->Draw("same");
+  TF1 *fsg_test5 = new TF1("fsg_test5",SkGausPeak,-1.0,1.0,4); fsg_test5->SetParameters(10,0,0.5,-4); fsg_test5->SetLineColor(kCyan); fsg_test5->Draw("same");
+*/
 } 

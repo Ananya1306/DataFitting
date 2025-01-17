@@ -25,7 +25,7 @@ double weibull_pdf(double *x, double *par) {
 Bool_t reject;
 Double_t fRejWeibull(Double_t *x, Double_t *par)
 {
-    if (reject && x[0] > 0.07 && x[0] < 0.25) {
+    if (reject && x[0] > 0.06 && x[0] < 0.2) {
       TF1::RejectPoint();
       return 0;
    }
@@ -37,7 +37,7 @@ void fitExclude_Weibull_Data() {
    //Get the Histogram
 
    TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
+   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF2_phi10");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    //hBack->Draw();
 
@@ -49,11 +49,11 @@ void fitExclude_Weibull_Data() {
    hBack->Fit(fw,"0");
    reject = kFALSE;
    //store 2 separate functions for visualization
-   TF1 *fleft = new TF1("fleft",fRejWeibull,0,0.087,4);
+   TF1 *fleft = new TF1("fleft",fRejWeibull,0,0.06,4);
    fleft->SetParameters(fw->GetParameters());
    hBack->GetListOfFunctions()->Add(fleft);
    gROOT->GetListOfFunctions()->Remove(fleft);
-   TF1 *fright = new TF1("fright",fRejWeibull,0.25,1.0,4);
+   TF1 *fright = new TF1("fright",fRejWeibull,0.2,1.0,4);
    fright->SetParameters(fw->GetParameters());
    hBack->GetListOfFunctions()->Add(fright);
    gROOT->GetListOfFunctions()->Remove(fright);
