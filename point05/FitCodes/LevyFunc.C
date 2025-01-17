@@ -20,13 +20,13 @@ void LevyFunc(){
    TH1F *h = (TH1F*)f->Get("pi0MxFPhi_2");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
-   for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
+   for(int i=12; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
    hBack->Draw(); 
   
    TF1 *fl = new TF1("fl",levy,0,1,3); 
    //fl->SetParameters(1500,0.02,0.0); //pi0MxFPhi_0 fit initial parameters
    //fl->SetParameters(150,0.9,0.01); //pi0MxFPhi_1 fit initial parameters
-   fl->SetParameters(150,0.9,0.005); //pi0MxFPhi_2 fit initial parameters
+   fl->SetParameters(150,0.09,0.005); //pi0MxFPhi_2 fit initial parameters
    fl->Draw("same");
    hBack->Fit(fl,"R");
 

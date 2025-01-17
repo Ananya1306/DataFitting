@@ -18,7 +18,7 @@ void WeibullFuncData(){
    TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF2_phi10");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
-   for(int i=8; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}
+   for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}
    hBack->Draw(); 
   
 //for xF0 and xF1

@@ -56,15 +56,37 @@ void FullFitData(){
    fitFcn->SetParameter(7,1.44953e+01); //skgaus skewness
 */
 //For xF2 Data
-   fitFcn->SetParameter(0,7.63615e-01); //weibull shape
-   fitFcn->SetParameter(1,8.75137e+00); //weibull scale
-   fitFcn->SetParameter(2,6.50004e-02);  //weibull location
-   fitFcn->SetParameter(3,5.38813e+02); //weibull amplitude
-   fitFcn->SetParameter(4,1.92025e+03); //skgaus amplitude
-   fitFcn->SetParameter(5,1.33428e-01); //skgaus mean
-   fitFcn->SetParameter(6,4.56236e-02); //skgaus sigma
-   fitFcn->SetParameter(7,-1.69004e-01); //skgaus skewness
+//   fitFcn->SetParameter(0,9.08661e-01); //weibull shape
+//   fitFcn->SetParameter(1,5.16092e-01); //weibull scale
+//   fitFcn->SetParameter(2,7.52973e-02);  //weibull location
+//   fitFcn->SetParameter(3,1.32086e+02); //weibull amplitude
+  
+/*   fitFcn->SetParameter(0,6.07931e-01); //weibull shape
+   fitFcn->SetParameter(1,9.27480e-01); //weibull scale
+   fitFcn->SetParameter(2,9.63899e-02);  //weibull location
+   fitFcn->SetParameter(3,1.99215e+02); //weibull amplitude
+*/
+   fitFcn->SetParameter(0,9.54581e-01); //weibull shape
+   fitFcn->SetParameter(1,6.50360e-01); //weibull scale
+   fitFcn->SetParameter(2,8.49998e-02);  //weibull location
+   fitFcn->SetParameter(3,1.29145e+02); //weibull amplitude
+  
+/*   fitFcn->SetParameter(4,9.23950e+02); //skgaus amplitude
+   fitFcn->SetParameter(5,1.30225e-01); //skgaus mean
+   fitFcn->SetParameter(6,5.37411e-02); //skgaus sigma
+   fitFcn->SetParameter(7,1.56325e+01); //skgaus skewness
+*/
+   fitFcn->SetParameter(4,1.69577e+03); //skgaus amplitude
+   fitFcn->SetParameter(5,1.31567e-01); //skgaus mean
+   fitFcn->SetParameter(6,4.56549e-02); //skgaus sigma
+   fitFcn->SetParameter(7,1.06439e+00); //skgaus skewness
 
+/*   fitFcn->SetParameter(4,7.82475e+02); //skgaus amplitude
+   fitFcn->SetParameter(5,1.27669e-01); //skgaus mean
+   fitFcn->SetParameter(6,7.54396e-02); //skgaus sigma
+   fitFcn->SetParameter(7,1.41958e+01); //skgaus skewness
+*/
+   h->Draw("ep");
    h->Fit("fitFcn","V+","ep");
    fitFcn->Draw("same");
 
