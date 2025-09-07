@@ -14,22 +14,25 @@ double weibull_pdf(double *x, double *par) {
 
 void WeibullFuncData(){
 
-   TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF2_phi10");
+//   TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
+//   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
+
+   TFile *f = new TFile("../BlueBeam_xF_hists_modRange.root");
+   TH1F *h = (TH1F*)f->Get("BlueBeam_xF0");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
-   for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}
+   for(int i=12; i<18; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}
    hBack->Draw(); 
   
 //for xF0 and xF1
-   TF1 *fw = new TF1("fw",weibull_pdf,0,1,4); 
-   //fw->SetParameters(0.4,1.5,0.05,450); // pi0M_BDown_xF0_phi10 fit initial parameter
+   TF1 *fw = new TF1("fw",weibull_pdf,0,0.4,4); 
+   fw->SetParameters(0.4,1.5,0.05,450); // pi0M_BDown_xF0_phi10 fit initial parameter
    //fw->SetParameters(10,15,0.06,800); //pi0M_BDown_xF1_phi10 fit initial parameter
 //for xF2 define the ranges of the function
    //TF1 *fw = new TF1("fw",weibull_pdf,0.2,1,4);  
-   fw->SetParameters(0.6,3.0,0.1,100); //pi0M_BDown_xF2_phi10 fit initial parameter
+  // fw->SetParameters(0.6,3.0,0.1,100); //pi0M_BDown_xF2_phi10 fit initial parameter
    fw->Draw("same");
-   hBack->Fit(fw,"R");
+   hBack->Fit(fw,"RW");
 
   double shape = fw->GetParameter(0);
   double scale = fw->GetParameter(1);

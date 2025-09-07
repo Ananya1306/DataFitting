@@ -1,0 +1,66 @@
+root -l -q 'pi0yields.C(2,0,"Yellow","YUp")'
+root -l -q 'pi0yields.C(2,0,"Yellow","YDown")'
+root -l -q 'pi0yields.C(2,1,"Yellow","YUp")'
+root -l -q 'pi0yields.C(2,1,"Yellow","YDown")'
+root -l -q 'pi0yields.C(2,2,"Yellow","YUp")'
+root -l -q 'pi0yields.C(2,2,"Yellow","YDown")'
+root -l -q 'pi0yields.C(2,3,"Yellow","YUp")'
+root -l -q 'pi0yields.C(2,3,"Yellow","YDown")'
+root -l -q 'pi0yields.C(2,0,"Blue","BUp")' 
+root -l -q 'pi0yields.C(2,0,"Blue","BDown")' 
+root -l -q 'pi0yields.C(2,1,"Blue","BUp")' 
+root -l -q 'pi0yields.C(2,1,"Blue","BDown")' 
+root -l -q 'pi0yields.C(2,2,"Blue","BUp")' 
+root -l -q 'pi0yields.C(2,2,"Blue","BDown")' 
+root -l -q 'pi0yields.C(2,3,"Blue","BUp")' 
+root -l -q 'pi0yields.C(2,3,"Blue","BDown")' 
+
+
+
+
+root -l -q 'aN_crossRatio.C(11,1,"Blue","sig")'
+root -l -q 'aN_crossRatio.C(11,1,"Blue","sb")'
+root -l -q 'aN_crossRatio.C(11,2,"Blue","sig")'
+root -l -q 'aN_crossRatio.C(11,2,"Blue","sb")'
+root -l -q 'aN_crossRatio.C(11,3,"Blue","sig")'
+root -l -q 'aN_crossRatio.C(11,3,"Blue","sb")'
+root -l -q 'aN_crossRatio.C(11,4,"Blue","sig")'
+root -l -q 'aN_crossRatio.C(11,4,"Blue","sb")'
+root -l -q 'aN_crossRatio.C(11,5,"Blue","sig")'
+root -l -q 'aN_crossRatio.C(11,5,"Blue","sb")'
+root -l -q 'aN_crossRatio.C(11,6,"Blue","sig")'
+root -l -q 'aN_crossRatio.C(11,6,"Blue","sb")'
+
+
+root -l -q 'graph_crossRatio.C(11,"Blue","sig")'
+root -l -q 'graph_crossRatio.C(11,"Blue","sb")'
+root -l -q 'graph_crossRatio.C(11,"Blue","sig")'
+root -l -q 'graph_crossRatio.C(11,"Blue","sb")'
+root -l -q 'graph_crossRatio.C(11,"Blue","sig")'
+root -l -q 'graph_crossRatio.C(11,"Blue","sb")'
+
+root -l -q 'graph_crossRatio.C(0,"Yellow","sig")'
+root -l -q 'graph_crossRatio.C(0,"Yellow","sb")'
+root -l -q 'graph_crossRatio.C(1,"Yellow","sig")'
+root -l -q 'graph_crossRatio.C(1,"Yellow","sb")'
+root -l -q 'graph_crossRatio.C(2,"Yellow","sig")'
+root -l -q 'graph_crossRatio.C(2,"Yellow","sb")'
+
+
+root -l -q 'graph_relLum.C(0,"Blue","sig")'
+root -l -q 'graph_relLum.C(0,"Blue","sb")'
+root -l -q 'graph_relLum.C(1,"Blue","sig")'
+root -l -q 'graph_relLum.C(1,"Blue","sb")'
+root -l -q 'graph_relLum.C(2,"Blue","sig")'
+root -l -q 'graph_relLum.C(2,"Blue","sb")'
+root -l -q 'graph_relLum.C(0,"Yellow","sig")'
+root -l -q 'graph_relLum.C(0,"Yellow","sb")'
+root -l -q 'graph_relLum.C(1,"Yellow","sig")'
+root -l -q 'graph_relLum.C(1,"Yellow","sb")'
+root -l -q 'graph_relLum.C(2,"Yellow","sig")'
+root -l -q 'graph_relLum.C(2,"Yellow","sb")'
+
+
+
+
+

@@ -98,10 +98,10 @@ void FullFitEmbedding_Levy(){
  
    //h->Draw("ep");
    backFcn->SetParameters(back0,back1,back2);
-  // backFcn->Draw("same");
+   backFcn->Draw("same");
 
    signalFcn->SetParameters(scale,mean,sigma,skew);
- //  signalFcn->Draw("same");
+   signalFcn->Draw("same");
 
    //draw the legend
    TLegend *legend=new TLegend(0.6,0.65,0.88,0.85);
