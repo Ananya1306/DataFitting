@@ -1,4 +1,4 @@
-void graph_raw_aN(string beam_input, string method_input){
+void graph_raw_aN(int range_input, string beam_input, string method_input){
 
 //range_input = 0/1/2/3/4
 //beam_input = Blue/Yellow
@@ -20,8 +20,9 @@ void graph_raw_aN(string beam_input, string method_input){
 	cout<<"BlueBeam signal region"<<endl;
 	int n0 = 0;
 	fstream file0;
-	file0.open(Form("aN_mod_%s_sig_goodChi2.txt",method_input.c_str()),std::ios::in); 
-        double xF_val, aN_sig_phi, aN_sig_phi_err, aN_sig_cosphi, aN_sig_cosphi_err;
+	file0.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_%s_sig_goodChi2.txt",range_input,beam_input.c_str(),method_input.c_str()),std::ios::in); 
+        //file0.open(Form("sig_sb_range%d/%sBeam/aN_mod_%s_sig_goodChi2.txt",range_input,beam_input.c_str(),method_input.c_str()),std::ios::in);
+	double xF_val, aN_sig_phi, aN_sig_phi_err, aN_sig_cosphi, aN_sig_cosphi_err;
         auto gr_phi = new TGraphAsymmErrors();
         gr_phi->SetTitle("Raw A_{N} for sideband region; xF; A^{raw}_{N}");
         gr_phi->SetMarkerColor(marker_color); gr_phi->SetLineColor(marker_color); gr_phi->SetMarkerStyle(marker_style_sig); gr_phi->SetMarkerSize(marker_size);
@@ -39,11 +40,14 @@ void graph_raw_aN(string beam_input, string method_input){
         }
         file0.close();
 
+
+	double offset = 0.005;
 	cout<<"Blue Beam sideband region"<<endl;
         int n1 = 0; //const double y_offset = 0.005;
         fstream file1;
-	file1.open(Form("aN_mod_%s_sb_goodChi2.txt",method_input.c_str()),std::ios::in);
-        double xF_val_y, aN_sb_phi, aN_sb_phi_err, aN_sb_cosphi, aN_sb_cosphi_err;
+	file1.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_%s_bkg_goodChi2.txt",range_input,beam_input.c_str(),method_input.c_str()),std::ios::in);
+        //file1.open(Form("sig_sb_range%d/%sBeam/aN_mod_%s_sb_goodChi2.txt",range_input,beam_input.c_str(),method_input.c_str()),std::ios::in);
+	double xF_val_y, aN_sb_phi, aN_sb_phi_err, aN_sb_cosphi, aN_sb_cosphi_err;
         auto gr_phi_sb = new TGraphAsymmErrors();
         gr_phi_sb->SetTitle("Raw A_{N} for sideband region; xF; A^{raw}_{N}");
         gr_phi_sb->SetMarkerColor(marker_color); gr_phi_sb->SetLineColor(marker_color); gr_phi_sb->SetMarkerStyle(marker_style_sb); gr_phi_sb->SetMarkerSize(marker_size);
@@ -51,7 +55,7 @@ void graph_raw_aN(string beam_input, string method_input){
         while(1){
                 file1>>xF_val_y>>aN_sb_phi>>aN_sb_phi_err>>aN_sb_cosphi>>aN_sb_cosphi_err;
 		 
-                gr_phi_sb->SetPoint(n1, xF_val_y, aN_sb_phi);
+                gr_phi_sb->SetPoint(n1, xF_val_y + offset, aN_sb_phi);
 		gr_phi_sb->SetPointError(n1, 0.0, 0.0,(aN_sb_phi_err),(aN_sb_phi_err));
                 cout<<n1<<" "<<xF_val_y<<" "<<aN_sb_phi<<" "<<aN_sb_phi_err<<" "<<aN_sb_phi<<endl;
                 n1++;
@@ -65,9 +69,8 @@ void graph_raw_aN(string beam_input, string method_input){
 	
 	auto *mg = new TMultiGraph();
 	mg->Add(gr_phi); mg->Add(gr_phi_sb);
-	gr_phi->SetTitle("#pi^{0} A_{N}"); gr_phi_sb->SetTitle("Bg A_{N}"); 
-	//gr_phi->SetTitle(Form("signal %s", method_input.c_str())); gr_phi_sb->SetTitle(Form("sideband %s", method_input.c_str()));
-	mg->SetTitle(Form("A_{N} for %s Beam using Weibull Bg, Sk Gaus Sig; xF; A_{N}",beam_input.c_str()));
+	gr_phi->SetTitle(Form("signal %s", method_input.c_str())); gr_phi_sb->SetTitle(Form("background %s", method_input.c_str()));
+	mg->SetTitle(Form("Raw A_{N} for %s Beam; xF; A^{raw}_{N}",beam_input.c_str()));
 	TCanvas *c2 = new TCanvas();
 	mg->Draw("AP"); c2->BuildLegend();
 	
@@ -84,8 +87,8 @@ void graph_raw_aN(string beam_input, string method_input){
 	//line.SetLineWidth(2);    // Optional: Set line width
 	line->Draw("same");
 
-/*	TFile *f = TFile::Open(Form("aN_all_range%d.root",range_input),"UPDATE");
+	TFile *f = TFile::Open(Form("aN_all_range%d.root",range_input),"UPDATE");
 	f->cd();
- 	mg->Write(Form("graph_raw_aN_%sBeam_%s",beam_input.c_str(),method_input.c_str()));
-*/
+ 	mg->Write(Form("graph_raw_aN_indvFit_ScottMethod_%sBeam_%s",beam_input.c_str(),method_input.c_str()));
+	//mg->Write(Form("graph_raw_aN_%sBeam_%s",beam_input.c_str(),method_input.c_str()));
 }

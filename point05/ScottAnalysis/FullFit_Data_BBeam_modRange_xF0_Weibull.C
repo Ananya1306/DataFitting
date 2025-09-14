@@ -29,14 +29,10 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
 void FullFit_Data_BBeam_modRange_xF0_Weibull(int phi_val){
 
    double phi_val_blue[24] = {-3.01069, -2.74889, -2.48709, -2.22529, -1.96349, -1.70169, -1.4399, -1.17809, -0.916292, -0.654503, -0.392699, -0.130894, 0.130894, 0.392699, 0.654503, 0.916292, 1.17809, 1.4399, 1.70169, 1.9635, 2.2253, 2.48709, 2.74889, 3.01069};
-
-  	sb_Low_1_40 = 0.0; sb_High_1_40 = 0.08; sig_Low_40 = 0.08; sig_High_40 = 0.19; sb_Low_2_40 = 0.19; sb_High_2_40 = 0.40;
-        sb_Low_1_41 = 0.0; sb_High_1_41 = 0.09; sig_Low_41 = 0.09; sig_High_41 = 0.20; sb_Low_2_41 = 0.20; sb_High_2_41 = 0.40;
-        sb_Low_1_42 = 0.0; sb_High_1_42 = 0.10; sig_Low_42 = 0.10; sig_High_42 = 0.21; sb_Low_2_42 = 0.21; sb_High_2_42 = 0.40;
-        sb_Low_1_43 = 0.0; sb_High_1_43 = 0.11; sig_Low_43 = 0.11; sig_High_43 = 0.22; sb_Low_2_43 = 0.22; sb_High_2_43 = 0.40;
-        sb_Low_1_44 = 0.0; sb_High_1_44 = 0.08; sig_Low_44 = 0.08; sig_High_44 = 0.21; sb_Low_2_44 = 0.21; sb_High_2_44 = 0.40;
-        sb_Low_1_45 = 0.0; sb_High_1_45 = 0.09; sig_Low_45 = 0.09; sig_High_45 = 0.22; sb_Low_2_45 = 0.22; sb_High_2_45 = 0.40;
-  
+    
+   int range[6] = {40, 41, 42, 43, 44, 45};
+   double sig_Low[6] = {0.08, 0.09, 0.10, 0.11, 0.08, 0.09};
+   double sig_High[6] = {0.19, 0.20, 0.21, 0.22, 0.21, 0.22};
 
    TFile *f = new TFile("BlueBeamAllxF0.root");
    TH1F *h = (TH1F*)f->Get(Form("pi0M_BAll_xF0_phi%d",phi_val));
@@ -202,7 +198,51 @@ else {
    outfile<<phi_val<<" "<<fitFcn->GetChisquare()/fitFcn->GetNDF()<<" "<<fitFcn->GetParameter(3)<<" "<<fitFcn->GetParError(3)<<" "<<fitFcn->GetParameter(4)<<" "<<fitFcn->GetParError(4)<<" "<<fitFcnUp->GetChisquare()/fitFcnUp->GetNDF()<<" "<<fitFcnUp->GetParameter(3)<<" "<<fitFcnUp->GetParError(3)<<" "<<fitFcnUp->GetParameter(4)<<" "<<fitFcnUp->GetParError(4)<<" "<<fitFcnDown->GetChisquare()/fitFcnDown->GetNDF()<<" "<<fitFcnDown->GetParameter(3)<<" "<<fitFcnDown->GetParError(3)<<" "<<fitFcnDown->GetParameter(4)<<" "<<fitFcnDown->GetParError(4)<<endl;
    outfile.close();
 
-   nUp = 
+cout<<"phival "<<" sig "<<" sigerr "<<" back "<<" backerr "<<endl;
+
+   int num_files = 6;
+    std::vector<std::ofstream> outfile_array_Up(num_files);
+    std::vector<std::ofstream> outfile_array_Down(num_files);
+
+    for (int i = 0; i < num_files; ++i) {
+        std::string filename = "BUp_pi0_bkg_xF0_range" + std::to_string(i) + ".txt";
+        outfile_array_Up[i].open(filename, std::ios::app);
+
+        if (outfile_array_Up[i].is_open()) {
+            std::cout << "Successfully opened " << filename << std::endl;
+            //outfile_array[i] << "This is content for file " << i << std::endl;
+        } else {
+            std::cerr << "Failed to open " << filename << std::endl;
+        }
+    }
+
+    // Don't forget to close the files when you're done.
+    for (int i = 0; i < num_files; ++i) {
+        if (outfile_array_Up[i].is_open()) {
+	    outfile_array_Up[i]<<phi_val_blue[phi_val]<<" "<<fitFcnUp->Integral(sig_Low[i],sig_High[i])*100 - backFcnUp->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(fitFcnUp->Integral(sig_Low[i],sig_High[i])*100 - backFcnUp->Integral(sig_Low[i],sig_High[i])*100)<<" "<<backFcnUp->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(backFcnUp->Integral(sig_Low[i],sig_High[i])*100)<<endl;
+            outfile_array_Up[i].close();
+        }
+    }
+
+    for (int i = 0; i < num_files; ++i) {
+        std::string filename = "BDown_pi0_bkg_xF0_range" + std::to_string(i) + ".txt";
+        outfile_array_Down[i].open(filename, std::ios::app);
+
+        if (outfile_array_Down[i].is_open()) {
+            std::cout << "Successfully opened " << filename << std::endl;
+            //outfile_array[i] << "This is content for file " << i << std::endl;
+        } else {
+            std::cerr << "Failed to open " << filename << std::endl;
+        }
+    }
+
+    // Don't forget to close the files when you're done.
+    for (int i = 0; i < num_files; ++i) {
+        if (outfile_array_Down[i].is_open()) {
+            outfile_array_Down[i]<<phi_val_blue[phi_val]<<" "<<fitFcnDown->Integral(sig_Low[i],sig_High[i])*100 - backFcnDown->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(fitFcnDown->Integral(sig_Low[i],sig_High[i])*100 - backFcnDown->Integral(sig_Low[i],sig_High[i])*100)<<" "<<backFcnDown->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(backFcnDown->Integral(sig_Low[i],sig_High[i])*100)<<endl;
+            outfile_array_Down[i].close();
+        }
+    }
 
    gStyle->SetOptStat(0);
    gStyle->SetOptFit(1111);

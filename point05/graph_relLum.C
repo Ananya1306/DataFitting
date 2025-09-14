@@ -3,7 +3,7 @@ void graph_relLum(int range_input, string beam_input, string region_input){
 
 	std::ofstream outfile;
        outfile.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_relLum_%s_goodChi2.txt",range_input,beam_input.c_str(),region_input.c_str()),std::ios::out);
-        const int xFBins = 4; //5
+        const int xFBins = 5; //4
 
 	double pol;        
 	const double pol_blue = 0.5785;
@@ -13,8 +13,8 @@ void graph_relLum(int range_input, string beam_input, string region_input){
 
 	double aN_sb_phi[xFBins]; double aN_sb_phi_err[xFBins];
         double aN_sb_cosphi[xFBins]; double aN_sb_cosphi_err[xFBins];
-	//double xF_val[xFBins] = {0.0875,0.1125,0.15,0.2,0.3};
-        double xF_val[xFBins] = {0.075, 0.125, 0.20, 0.30};
+	double xF_val[xFBins] = {0.0875,0.1125,0.15,0.2,0.3};
+        //double xF_val[xFBins] = {0.075, 0.125, 0.20, 0.30};
 
 	int n0=0;
         fstream file0;
@@ -30,6 +30,8 @@ void graph_relLum(int range_input, string beam_input, string region_input){
                 gr0->SetPointError(n0, 0, relLumStatErr_xF0);
 		gr00->SetPoint(n0, cos(phi_val_xF0), relLum_xF0);
                 gr00->SetPointError(n0, 0, relLumStatErr_xF0);
+
+		cout<<phi_val_xF0<<" relLum "<<relLum_xF0<<" statErr = "<<relLumStatErr_xF0<<" sysErr = "<<relLumSysErr_xF0<<" "<<" totErr = "<<relLumTotErr_xF0<<endl;
             n0++;
         }
 
@@ -131,7 +133,7 @@ void graph_relLum(int range_input, string beam_input, string region_input){
         f8->SetParameters(0,1); gr33->Fit("f8","RV+"); gr33->Draw("AP");
 	aN_sb_phi[3] = f7->GetParameter(1); aN_sb_phi_err[3] = f7->GetParError(1);
 	aN_sb_cosphi[3] = f8->GetParameter(1); aN_sb_cosphi_err[3] = f8->GetParError(1);
-/*
+
 	int n4=0;
         fstream file4;
         file4.open(Form("sig_sb_range%d/%sBeam/auto_mod_relLum_%s_xF4.txt",range_input,beam_input.c_str(),region_input.c_str()),std::ios::in);
@@ -160,7 +162,7 @@ void graph_relLum(int range_input, string beam_input, string region_input){
         f10->SetParameters(0,1); gr44->Fit("f10","RV+"); gr44->Draw("AP");
         aN_sb_phi[4] = f9->GetParameter(1); aN_sb_phi_err[4] = f9->GetParError(1);
         aN_sb_cosphi[4] = f10->GetParameter(1); aN_sb_cosphi_err[4] = f10->GetParError(1);
-*/
+
 	auto mg = new TMultiGraph();
         mg->Add(gr0); gr0->SetTitle(" xF0 bin xF = 0.0875");
         mg->Add(gr1); gr1->SetTitle(" xF1 bin xF = 0.1125");

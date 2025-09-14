@@ -18,3 +18,5 @@ graph_crossRatio_auto.C and graph_relLum_auto.C : Plots graphs of the crossRatio
 5. graph_raw_aN.C : Plots graphs of the raw aN. Input : aN_crossRatio_sb(sig).txt. Output : Just a graph
 
 6. aN_bkg_pi0.C : Plots graphs of the final aN for both pi0 and the background region. Input : aN_crossRatio_sb(sig).txt, fSig_BB_Levy(LogNormal, Weibull ).txt. Output : aN_pi0_bkg_Levy(Weibull, LogNormal).txt
+
+7. graph_aN_bkg_pi0_v1.C : Plots all graphs together

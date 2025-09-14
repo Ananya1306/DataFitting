@@ -61,6 +61,13 @@ root -l -q 'graph_relLum.C(2,"Yellow","sig")'
 root -l -q 'graph_relLum.C(2,"Yellow","sb")'
 
 
-
-
-
+mv auto_pi0_xF0_BDown.txt auto_pi0_xF0_YDown.txt
+mv auto_pi0_xF1_BDown.txt auto_pi0_xF1_YDown.txt
+mv auto_pi0_xF2_BDown.txt auto_pi0_xF2_YDown.txt
+mv auto_pi0_xF3_BDown.txt auto_pi0_xF3_YDown.txt
+mv auto_pi0_xF4_BDown.txt auto_pi0_xF4_YDown.txt
+mv auto_pi0_xF0_BUp.txt auto_pi0_xF0_YUp.txt
+mv auto_pi0_xF1_BUp.txt auto_pi0_xF1_YUp.txt
+mv auto_pi0_xF2_BUp.txt auto_pi0_xF2_YUp.txt
+mv auto_pi0_xF3_BUp.txt auto_pi0_xF3_YUp.txt
+mv auto_pi0_xF4_BUp.txt auto_pi0_xF4_YUp.txt

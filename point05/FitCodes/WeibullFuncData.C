@@ -17,8 +17,9 @@ void WeibullFuncData(){
 //   TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
 //   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
 
-   TFile *f = new TFile("../BlueBeam_xF_hists_modRange.root");
-   TH1F *h = (TH1F*)f->Get("BlueBeam_xF0");
+   TFile *f = new TFile("../BlueBeam_xF5bins_hists_modRange.root");
+   //TH1F *h = (TH1F*)f->Get("BlueBeam_xF0");
+   TH1F *h = (TH1F*)f->Get("pi0M_BAll_xF3_phi0");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
    for(int i=12; i<18; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}

@@ -34,12 +34,12 @@ else if(range_input == 50){sb_Low_1 = 0; sb_High_1 = 11; sig_Low = 11; sig_High 
 //for 4 xF bins, ranges are 40, 41, 42 etc. data file is EEmc....xFTest_1.root
 //for 5 xF bins, ranges are 50, 51, 52 etc. data file is EEmc....xFTest_2.root
 
-	if(range_input == 40){sb_Low_1 = 0; sb_High_1 = 8; sig_Low = 8; sig_High = 19; sb_Low_2 = 19; sb_High_2 = 40;}
-	if(range_input == 41){sb_Low_1 = 0; sb_High_1 = 9; sig_Low = 9; sig_High = 20; sb_Low_2 = 20; sb_High_2 = 40;}
-	if(range_input == 42){sb_Low_1 = 0; sb_High_1 = 10; sig_Low = 10; sig_High = 21; sb_Low_2 = 21; sb_High_2 = 40;}
-	if(range_input == 43){sb_Low_1 = 0; sb_High_1 = 11; sig_Low = 11; sig_High = 22; sb_Low_2 = 22; sb_High_2 = 40;}
-	if(range_input == 44){sb_Low_1 = 0; sb_High_1 = 8; sig_Low = 8; sig_High = 21; sb_Low_2 = 21; sb_High_2 = 40;}
-	if(range_input == 45){sb_Low_1 = 0; sb_High_1 = 9; sig_Low = 9; sig_High = 22; sb_Low_2 = 22; sb_High_2 = 40;}
+	if(range_input == 50){sb_Low_1 = 0; sb_High_1 = 8; sig_Low = 8; sig_High = 19; sb_Low_2 = 19; sb_High_2 = 40;}
+	if(range_input == 51){sb_Low_1 = 0; sb_High_1 = 9; sig_Low = 9; sig_High = 20; sb_Low_2 = 20; sb_High_2 = 40;}
+	if(range_input == 52){sb_Low_1 = 0; sb_High_1 = 10; sig_Low = 10; sig_High = 21; sb_Low_2 = 21; sb_High_2 = 40;}
+	if(range_input == 53){sb_Low_1 = 0; sb_High_1 = 11; sig_Low = 11; sig_High = 22; sb_Low_2 = 22; sb_High_2 = 40;}
+	if(range_input == 54){sb_Low_1 = 0; sb_High_1 = 8; sig_Low = 8; sig_High = 21; sb_Low_2 = 21; sb_High_2 = 40;}
+	if(range_input == 55){sb_Low_1 = 0; sb_High_1 = 9; sig_Low = 9; sig_High = 22; sb_Low_2 = 22; sb_High_2 = 40;}
 
 	const int phiVal = 25; const int phi = 24; const int spin = 2; const int phihalf = 12; const double pi = 3.14159; const int xF = 5;
 										
@@ -54,7 +54,7 @@ else if(range_input == 50){sb_Low_1 = 0; sb_High_1 = 11; sig_Low = 11; sig_High 
 	if(beam_input == "Yellow"){for(int i=0; i<phiVal; i++){phi_val[i] = phi_val_yellow[i];}}
 
 	
-	TFile *f = new TFile(Form("EEmcNanoTreeQA_schedRun15_%sBeam_160All_Et06pt0_xFTest_1.root",beam_input.c_str()));
+	TFile *f = new TFile(Form("EEmcNanoTreeQA_schedRun15_%sBeam_160All_Et06pt0_xFTest_2.root",beam_input.c_str()));
 	TH1F *histo[phi];
 
 	cout<<"pi0 yields for Blue Beam Up xF (0.05-0.1) or xF = 0.075"<<endl;

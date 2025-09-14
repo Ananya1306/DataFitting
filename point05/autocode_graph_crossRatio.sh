@@ -1,7 +1,7 @@
 #!/bin/bash
-
+#40 41 42 43 44 45
 # Define the parameter values as arrays
-declare -a ranges=(40 41 42 43 44 45)
+declare -a ranges=(50 51 52 53 54 55)
 #declare -a xF_values=(0 1 2 3)
 declare -a beams=("Blue" "Yellow")
 declare -a regions=("sig" "sb")
@@ -28,8 +28,9 @@ for range_val in "${ranges[@]}"; do
                 echo "Running macro with parameters: range=$range_val, beam=$beam_val, region=$region_val"
 
                 # Replace the following line with the actual command to run your ROOT macro.
-                 root -l -b -q 'graph_crossRatio.C('$range_val',"'$beam_val'","'$region_val'")'
-                # For a C++ executable: ./my_macro $range_val $xF_val $beam_val $spin_val
+                # root -l -b -q 'graph_crossRatio.C('$range_val',"'$beam_val'","'$region_val'")'
+        	root -l -b -q 'graph_relLum.C('$range_val',"'$beam_val'","'$region_val'")'
+	        # For a C++ executable: ./my_macro $range_val $xF_val $beam_val $spin_val
                 #root -l -b -q 'pi0yields.C($range_val,$xF_val,\"$beam_val\",\"$spin_val\")'
                 #echo '$range_val','$xF_val',"$beam_val","$spin_val"
             done

@@ -68,7 +68,7 @@ void aN_crossRatio(int range_input, int xF_input, string beam_input, string regi
 
 	for(int i=0; i<bins; i++){
 		
-		cout<<phiBUpArray[i]<<" "<<pi0sbBUpArray[i]<<" "<<pi0sbBDownArray[i]<<endl;
+		cout<<phiBUpArray[i]<<" "<<pi0sigBUpArray[i]<<" "<<pi0sigBDownArray[i]<<endl;
 
 		if(i<halfbins)
 		{
@@ -104,8 +104,8 @@ void aN_crossRatio(int range_input, int xF_input, string beam_input, string regi
 	}
 //Calculating Cross Ratio
 
-	ofstream outfile;
-        outfile.open(Form("sig_sb_range%d/%sBeam/auto_mod_crossRatio_%s_xF%d.txt",range_input,beam_input.c_str(),region_input.c_str(),xF_input),std::ios::out);
+//	ofstream outfile;
+//        outfile.open(Form("sig_sb_range%d/%sBeam/auto_mod_crossRatio_%s_xF%d.txt",range_input,beam_input.c_str(),region_input.c_str(),xF_input),std::ios::out);
 
 	cout<<"Finally, calculating cross ratio"<<endl;
 
@@ -163,8 +163,8 @@ void aN_crossRatio(int range_input, int xF_input, string beam_input, string regi
         std::cout << "Correct Error = " << CrossRatioErr[i] << std::endl;
         std::cout << "-----------------------------------" << std::endl;
 
-	if(i==0 || i == halfbins-1){continue;}
-                outfile<<phi_val[i]<<" "<<CrossRatio[i]<<" "<<CrossRatioErr[i]<<endl;
+//	if(i==0 || i == halfbins-1){continue;}
+//                outfile<<phi_val[i]<<" "<<CrossRatio[i]<<" "<<CrossRatioErr[i]<<endl;
 
 		}
 
@@ -178,8 +178,8 @@ void aN_crossRatio(int range_input, int xF_input, string beam_input, string regi
 */
 //Calculating sector by sector using Relative luminosity
 
-       cout<<" Rel Luminosity of Blue Beam = 0.990695 Stat Error = 0.00307404 Sys Err = 0.035848"<<endl;
-        cout<<" Rel Luminosity of Yellow Beam = 0.992644 Stat Error = 0.00310132 Sys Err = 0.0276967"<<endl; 
+       cout<<" Rel Luminosity of Blue Beam = 1.00199 Stat Error = 0.00019223273 Sys Err = 0.0"<<endl;
+        cout<<" Rel Luminosity of Yellow Beam = 0.997356 Stat Error = 0.00018987674 Sys Err = 0.0"<<endl; 
 	cout<<"Sector by Sector using Relative Luminosity"<<endl;
 	cout<<endl;
 	//double secBySecErr[bins];
@@ -189,11 +189,11 @@ void aN_crossRatio(int range_input, int xF_input, string beam_input, string regi
 	double e[bins], f[bins], e_err[bins], f_err[bins];
 	double R, R_err, R_sys;
 
-	if(beam_input == "Blue"){R = 0.990695; R_err = 0.00307404; R_sys = 0.0358484;}
-        if(beam_input == "Yellow"){R = 0.992644; R_err = 0.00310132; R_sys = 0.0276967;}
+	if(beam_input == "Blue"){R = 1.00199; R_err = 0.00019223273; R_sys = 0.0;}
+        if(beam_input == "Yellow"){R = 0.997356; R_err = 0.00018987674; R_sys = 0.0;}
 
-//	ofstream outfile2;
-//        outfile2.open(Form("sig_sb_range%d/%sBeam/auto_mod_relLum_%s_xF%d.txt",range_input,beam_input.c_str(),region_input.c_str(),xF_input),std::ios::out);
+	ofstream outfile2;
+        outfile2.open(Form("sig_sb_range%d/%sBeam/auto_mod_relLum_%s_xF%d.txt",range_input,beam_input.c_str(),region_input.c_str(),xF_input),std::ios::out);
 
 	for(int i=0; i<bins; i++){
 
@@ -246,8 +246,8 @@ void aN_crossRatio(int range_input, int xF_input, string beam_input, string regi
                   << ", Sys Err = " << secBySecSysErr[i]
                   << ", Total Err = " << secBySecTotErr[i] << std::endl;
 
-//		if(i==11 || i==12){continue;}
-//                outfile2<<phi_val[i]<<" "<<secBySec[i]<<" "<<secBySecStatErr[i]<<" "<<secBySecSysErr[i]<<" "<<secBySecTotErr[i]<<endl;
+		if(i==11 || i==12){continue;}
+                outfile2<<phi_val[i]<<" "<<secBySec[i]<<" "<<secBySecStatErr[i]<<" "<<secBySecSysErr[i]<<" "<<secBySecTotErr[i]<<endl;
 
 	}
 

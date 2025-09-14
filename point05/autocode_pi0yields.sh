@@ -1,9 +1,10 @@
 #!/bin/bash
-
+# 40 41 42 43 44 45
 # Define the parameter values as arrays
-declare -a ranges=(40 41 42 43 44 45)
-declare -a xF_values=(0 1 2 3)
+declare -a ranges=(50 51 52 53 54 55)
+declare -a xF_values=(0 1 2 3 4)
 declare -a beams=("Blue" "Yellow")
+#declare -a spins=("BUp" "BDown")
 declare -a blue_spins=("BUp" "BDown")
 declare -a yellow_spins=("YUp" "YDown")
 

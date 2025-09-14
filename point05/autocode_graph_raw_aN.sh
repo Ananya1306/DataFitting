@@ -1,10 +1,10 @@
 #!/bin/bash
-
+#40 41 42 43 44 45
 # Define the parameter values as arrays
-declare -a ranges=(40 41 42 43 44 45)
+declare -a ranges=(50 51 52 53 54 55)
 #declare -a xF_values=(0 1 2 3)
 declare -a beams=("Blue" "Yellow")
-declare -a methods=("crossRatio")
+declare -a methods=("relLum")
 #add relLum method later
 #declare -a regions=("sig" "sb")
 #declare -a blue_spins=("BUp" "BDown")

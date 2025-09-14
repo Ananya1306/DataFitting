@@ -28,8 +28,13 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
 
 void FullFit_Data_BBeam_modRange_xF4_Weibull(int phi_val){
 
+   double phi_val_blue[24] = {-3.01069, -2.74889, -2.48709, -2.22529, -1.96349, -1.70169, -1.4399, -1.17809, -0.916292, -0.654503, -0.392699, -0.130894, 0.130894, 0.392699, 0.654503, 0.916292, 1.17809, 1.4399, 1.70169, 1.9635, 2.2253, 2.48709, 2.74889, 3.01069};
 
-   TFile *f = new TFile("BlueBeamAllxF4.root");
+   int range[6] = {40, 41, 42, 43, 44, 45};
+   double sig_Low[6] = {0.08, 0.09, 0.10, 0.11, 0.08, 0.09};
+   double sig_High[6] = {0.19, 0.20, 0.21, 0.22, 0.21, 0.22};
+
+   TFile *f = new TFile("YellowBeamAllxF4.root");
    TH1F *h = (TH1F*)f->Get(Form("pi0M_BAll_xF4_phi%d",phi_val));
 
    TF1 *fitFcn = new TF1("fitFcn",fitFunction,0.0,0.4,8);
@@ -82,7 +87,7 @@ void FullFit_Data_BBeam_modRange_xF4_Weibull(int phi_val){
    signalFcn->Draw("same");
 
 
-    TFile *fUp = new TFile("BlueBeamUpxF4.root");
+    TFile *fUp = new TFile("YellowBeamUpxF4.root");
    TH1F *hUp = (TH1F*)fUp->Get(Form("pi0M_BUp_xF4_phi%d",phi_val));
 
    TF1 *fitFcnUp = new TF1("fitFcnUp",fitFunction,0.0,0.4,8);
@@ -114,7 +119,15 @@ void FullFit_Data_BBeam_modRange_xF4_Weibull(int phi_val){
    hUp->Fit("fitFcnUp","V+","ep"); //V+ for xF0, xF1 and xF3; RW for xF2
    fitFcnUp->Draw("same");
 
-   TFile *fDown = new TFile("BlueBeamDownxF4.root");
+    TF1 *backFcnUp = new TF1("backFcnUp",weibull_pdf,0.0,0.4,4);
+   backFcnUp->SetLineColor(kRed);
+   backFcnUp->SetParameter(0,fitFcnUp->GetParameter(0));
+   backFcnUp->SetParameter(1,fitFcnUp->GetParameter(1));
+   backFcnUp->SetParameter(2,fitFcnUp->GetParameter(2));
+   backFcnUp->SetParameter(3,fitFcnUp->GetParameter(3));
+   backFcnUp->Draw("same");
+
+   TFile *fDown = new TFile("YellowBeamDownxF4.root");
    TH1F *hDown = (TH1F*)fDown->Get(Form("pi0M_BDown_xF4_phi%d",phi_val));
 
    TF1 *fitFcnDown = new TF1("fitFcnDown",fitFunction,0.0,0.4,8);
@@ -146,10 +159,63 @@ void FullFit_Data_BBeam_modRange_xF4_Weibull(int phi_val){
    hDown->Fit("fitFcnDown","V+","ep"); //V+ for xF0, xF1 and xF3; RW for xF2
    fitFcnDown->Draw("same");
 
+   TF1 *backFcnDown = new TF1("backFcnDown",weibull_pdf,0.0,0.4,4);
+   backFcnDown->SetLineColor(kRed);
+   backFcnDown->SetParameter(0,fitFcnDown->GetParameter(0));
+   backFcnDown->SetParameter(1,fitFcnDown->GetParameter(1));
+   backFcnDown->SetParameter(2,fitFcnDown->GetParameter(2));
+   backFcnDown->SetParameter(3,fitFcnDown->GetParameter(3));
+   backFcnDown->Draw("same");
+
+
    ofstream outfile;
-   outfile.open("Par_BB_xF4.txt",std::ios::app);
+   outfile.open("Par_YB_xF4_5xFBins.txt",std::ios::app);
    outfile<<phi_val<<" "<<fitFcn->GetChisquare()/fitFcn->GetNDF()<<" "<<fitFcn->GetParameter(3)<<" "<<fitFcn->GetParError(3)<<" "<<fitFcn->GetParameter(4)<<" "<<fitFcn->GetParError(4)<<" "<<fitFcnUp->GetChisquare()/fitFcnUp->GetNDF()<<" "<<fitFcnUp->GetParameter(3)<<" "<<fitFcnUp->GetParError(3)<<" "<<fitFcnUp->GetParameter(4)<<" "<<fitFcnUp->GetParError(4)<<" "<<fitFcnDown->GetChisquare()/fitFcnDown->GetNDF()<<" "<<fitFcnDown->GetParameter(3)<<" "<<fitFcnDown->GetParError(3)<<" "<<fitFcnDown->GetParameter(4)<<" "<<fitFcnDown->GetParError(4)<<endl;
    outfile.close();
+
+   int num_files = 6;
+    std::vector<std::ofstream> outfile_array_Up(num_files);
+    std::vector<std::ofstream> outfile_array_Down(num_files);
+
+    for (int i = 0; i < num_files; ++i) {
+        std::string filename = "YUp_pi0_bkg_xF4_range" + std::to_string(i) + ".txt";
+        outfile_array_Up[i].open(filename, std::ios::app);
+
+        if (outfile_array_Up[i].is_open()) {
+            std::cout << "Successfully opened " << filename << std::endl;
+            //outfile_array[i] << "This is content for file " << i << std::endl;
+        } else {
+            std::cerr << "Failed to open " << filename << std::endl;
+        }
+    }
+
+    // Don't forget to close the files when you're done.
+    for (int i = 0; i < num_files; ++i) {
+        if (outfile_array_Up[i].is_open()) {
+            outfile_array_Up[i]<<phi_val_blue[phi_val]<<" "<<fitFcnUp->Integral(sig_Low[i],sig_High[i])*100 - backFcnUp->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(fitFcnUp->Integral(sig_Low[i],sig_High[i])*100 - backFcnUp->Integral(sig_Low[i],sig_High[i])*100)<<" "<<backFcnUp->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(backFcnUp->Integral(sig_Low[i],sig_High[i])*100)<<endl;
+            outfile_array_Up[i].close();
+        }
+    }
+
+    for (int i = 0; i < num_files; ++i) {
+        std::string filename = "YDown_pi0_bkg_xF4_range" + std::to_string(i) + ".txt";
+        outfile_array_Down[i].open(filename, std::ios::app);
+
+        if (outfile_array_Down[i].is_open()) {
+            std::cout << "Successfully opened " << filename << std::endl;
+            //outfile_array[i] << "This is content for file " << i << std::endl;
+        } else {
+            std::cerr << "Failed to open " << filename << std::endl;
+        }
+    }
+  
+    // Don't forget to close the files when you're done.
+    for (int i = 0; i < num_files; ++i) {
+        if (outfile_array_Down[i].is_open()) {
+            outfile_array_Down[i]<<phi_val_blue[phi_val]<<" "<<fitFcnDown->Integral(sig_Low[i],sig_High[i])*100 - backFcnDown->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(fitFcnDown->Integral(sig_Low[i],sig_High[i])*100 - backFcnDown->Integral(sig_Low[i],sig_High[i])*100)<<" "<<backFcnDown->Integral(sig_Low[i],sig_High[i])*100<<" "<<sqrt(backFcnDown->Integral(sig_Low[i],sig_High[i])*100)<<endl;
+            outfile_array_Down[i].close();
+        }
+    }
 
    gStyle->SetOptStat(0);
    gStyle->SetOptFit(1111);

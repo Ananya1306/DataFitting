@@ -3,7 +3,7 @@ void graph_crossRatio(int range_input, string beam_input, string region_input){
 
 	std::ofstream outfile;
 	outfile.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_crossRatio_%s_goodChi2.txt",range_input,beam_input.c_str(),region_input.c_str()),std::ios::out);
-        const int xFBins = 4; //5
+        const int xFBins = 5; //4
 	double pol; 
 	const double pol_blue = 0.5785;
         const double pol_yellow = 0.5872;
@@ -12,8 +12,8 @@ void graph_crossRatio(int range_input, string beam_input, string region_input){
 	 
 	double aN_sb_phi[xFBins]; double aN_sb_phi_err[xFBins];
 	double aN_sb_cosphi[xFBins]; double aN_sb_cosphi_err[xFBins];
-	//double xF_val[xFBins] = {0.0875,0.1125,0.15,0.2,0.3}; //for 5 xFBins
-        double xF_val[xFBins] = {0.075, 0.125, 0.20, 0.30}; //for 4 xFBins
+	double xF_val[xFBins] = {0.0875,0.1125,0.15,0.2,0.3}; //for 5 xFBins
+        //double xF_val[xFBins] = {0.075, 0.125, 0.20, 0.30}; //for 4 xFBins
 
 	int n0=0;
 	fstream file0;
@@ -144,7 +144,7 @@ void graph_crossRatio(int range_input, string beam_input, string region_input){
 	gr31->Fit("f8", "RV+"); 
 	gr31->Draw("AP");
 	aN_sb_cosphi[3] = f8->GetParameter(1); aN_sb_cosphi_err[3] = f8->GetParError(1);
-/*
+
 	int n4=0;
         fstream file4;
         file4.open(Form("sig_sb_range%d/%sBeam/auto_mod_crossRatio_%s_xF4.txt",range_input,beam_input.c_str(),region_input.c_str()),std::ios::in);
@@ -177,14 +177,14 @@ void graph_crossRatio(int range_input, string beam_input, string region_input){
         gr41->Fit("f10", "RV+"); 
         gr41->Draw("AP");
         aN_sb_cosphi[4] = f10->GetParameter(1); aN_sb_cosphi_err[4] = f10->GetParError(1);
-*/
+
 
 	auto mg = new TMultiGraph();
 	mg->Add(gr01); gr01->SetTitle("Cross Ratio for xF0 bin xF = 0.075");
 	mg->Add(gr11); gr11->SetTitle("Cross Ratio for xF1 bin xF = 0.125");
 	mg->Add(gr21); gr21->SetTitle("Cross Ratio for xF2 bin xF = 0.3");
 	mg->Add(gr31); gr31->SetTitle("Cross Ratio for xF3 bin xF = 0.3");
-        //mg->Add(gr41); gr41->SetTitle("Cross Ratio for xF3 bin xF = 0.3");
+        mg->Add(gr41); gr41->SetTitle("Cross Ratio for xF3 bin xF = 0.3");
 	mg->SetTitle("Cross Ratio for xF bins; #phi; Cross_Ratio");
 	TCanvas *c11 = new TCanvas(); mg->Draw("AP");
 	c11->BuildLegend();
@@ -200,8 +200,8 @@ void graph_crossRatio(int range_input, string beam_input, string region_input){
 	}
 
 	cout<<"Chi2/NDF for f1 = "<<f1->GetChisquare()/f1->GetNDF()<<" f2 = "<<f2->GetChisquare()/f2->GetNDF()<<endl;
-        cout<<"Chi2/NDF for f3 = "<<f1->GetChisquare()/f3->GetNDF()<<" f4 = "<<f4->GetChisquare()/f4->GetNDF()<<endl;
-	cout<<"Chi2/NDF for f5 = "<<f1->GetChisquare()/f5->GetNDF()<<" f6 = "<<f6->GetChisquare()/f6->GetNDF()<<endl;
-	cout<<"Chi2/NDF for f7 = "<<f1->GetChisquare()/f7->GetNDF()<<" f8 = "<<f8->GetChisquare()/f8->GetNDF()<<endl;
-
+        cout<<"Chi2/NDF for f3 = "<<f3->GetChisquare()/f3->GetNDF()<<" f4 = "<<f4->GetChisquare()/f4->GetNDF()<<endl;
+	cout<<"Chi2/NDF for f5 = "<<f5->GetChisquare()/f5->GetNDF()<<" f6 = "<<f6->GetChisquare()/f6->GetNDF()<<endl;
+	cout<<"Chi2/NDF for f7 = "<<f7->GetChisquare()/f7->GetNDF()<<" f8 = "<<f8->GetChisquare()/f8->GetNDF()<<endl;
+	cout<<"Chi2/NDF for f9 = "<<f9->GetChisquare()/f7->GetNDF()<<" f10 = "<<f8->GetChisquare()/f8->GetNDF()<<endl;
 }

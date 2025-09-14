@@ -18,8 +18,9 @@ void LevyFuncData(){
 
    //TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et06pt0_xFTest_1.root");
    //TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi20");
-   TFile *f = new TFile("../BlueBeam_xF_hists_modRange.root");
-   TH1F *h = (TH1F*)f->Get("BlueBeam_xF3");
+   TFile *f = new TFile("../BlueBeam_xF5bins_hists_modRange.root");
+   //TH1F *h = (TH1F*)f->Get("BlueBeam_xF3");
+   TH1F *h = (TH1F*)f->Get("pi0M_BAll_xF3_phi0");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
    for(int i=11; i<20; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);} //for xF0 and xF1 i starts from 8
@@ -28,7 +29,8 @@ void LevyFuncData(){
    TF1 *fl = new TF1("fl",levy,0,0.4,3); 
    //fl->SetParameters(1600,0.05,0.001); //pi0M_BDown_xF0_phi10 fit initial parameters 
    //fl->SetParameters(900,0.09,0.02); ////pi0M_BDown_xF1_phi10 fit initial parameters 
-   fl->SetParameters(50,0.1,0.06); ////pi0M_BDown_xF2_phi10 fit initial parameters
+   //fl->SetParameters(50,0.1,0.06); ////pi0M_BDown_xF2_phi10 fit initial parameters
+   fl->SetParameters(5.31216e+03,2.17221e-01,4.19787e-02);
    fl->Draw("same");
    hBack->Fit(fl,"V+");
 

@@ -17,8 +17,8 @@ void WeibullFuncData(){
 //   TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et04pt2_xFTest_1.root");
 //   TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi10");
 
-   TFile *f = new TFile("BlueBeamAllxF4.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BAll_xF4_phi0");
+   TFile *f = new TFile("BlueBeamAllxF2.root");
+   TH1F *h = (TH1F*)f->Get("pi0M_BAll_xF2_phi15");
    TH1F *hBack = (TH1F*)h->Clone("hBack");
    TH1F *hBackFit = (TH1F*)h->Clone("hBackFit");
    for(int i=13; i<22; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,500);}
@@ -30,8 +30,8 @@ void WeibullFuncData(){
    //fw->SetParameters(0.08,0.5,0.08,100); //pi0M_BDown_xF1_phi10 fit initial parameter
 //for xF2 define the ranges of the function
    //TF1 *fw = new TF1("fw",weibull_pdf,0.2,1,4);  
-//   fw->SetParameters(1.10732,2.24815,0.0642311,1274); //pi0M_BDown_xF2_phi10 fit initial parameter
-  fw->SetParameters(1.75553,0.190207,0.155009,813.631);  
+   fw->SetParameters(1.10732,2.24815,0.0642311,1274); //pi0M_BDown_xF2_phi10 fit initial parameter
+ // fw->SetParameters(1.75553,0.190207,0.155009,813.631);  
  fw->Draw("same");
    hBack->Fit(fw,"V+");
 

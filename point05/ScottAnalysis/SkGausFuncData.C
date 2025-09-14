@@ -16,16 +16,16 @@ void SkGausFuncData(){
 
    //TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et06pt0_xFTest_1.root");
    //TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi20");
-   TFile *f = new TFile("BlueBeamAllxF4.root");
-   TH1F *h = (TH1F*)f->Get("pi0M_BAll_xF4_phi0");
+   TFile *f = new TFile("BlueBeamAllxF3.root");
+   TH1F *h = (TH1F*)f->Get("pi0M_BAll_xF3_phi10");
    TH1F *hSig = (TH1F*)h->Clone("hSig");
    //for(int i=10; i<30; i++){hBack->SetBinContent(i,0); hBack->SetBinError(i,100);}
    hSig->Draw("ep"); 
   
-   TF1 *fsg = new TF1("fsg",SkGausPeak,0.12,0.2,4); 
+   TF1 *fsg = new TF1("fsg",SkGausPeak,0.13,0.19,4); 
   //fsg->SetParameters(2500,0.130,0.10,4); //pi0M_BDown_xF0_phi10 fit initial parameter
    //fsg->SetParameters(2500,0.125,0.008,4); //pi0M_BDown_xF1_phi10 fit initial parameter
-  fsg->SetParameters(2400,0.13,1,-1); //pi0M_BDown_xF2_phi10 fit initial parameter
+  fsg->SetParameters(20,0.13,-1,-1); //pi0M_BDown_xF2_phi10 fit initial parameter
   //fsg->SetParameter(0,1000); fsg->SetParameter(1,0.13); fsg->SetParameter(2,0.05); fsg->SetParameter(3,4);
   fsg->Draw("same");
   hSig->Fit(fsg,"RW");

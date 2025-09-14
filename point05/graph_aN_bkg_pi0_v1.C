@@ -5,6 +5,8 @@ void graph_aN_bkg_pi0_v1(int range_input, string region_input, string method_inp
 //region_input = sig/sb
 //method_input = crossRatio/relLum
 
+//This only works for the signal region of Blue Beam as of now
+
 	const double pol = 0.5785;
         const double pol_yellow = 0.5872;
         //double xF_val[4] = {0.075, 0.125, 0.20, 0.30};
@@ -15,24 +17,30 @@ void graph_aN_bkg_pi0_v1(int range_input, string region_input, string method_inp
 
         if(method_input == "crossRatio"){colorBB = 600; colorYB = 807; marker_style = 20; marker_size = 1.2; }
         else if(method_input == "relLum"){colorBB = 600; colorYB = 807; marker_style = 21; marker_size = 1.2;}
+//colorBB = 600 for Blue;
 
-        cout<<"BlueBeam"<<endl;
+	double offset_0 = 0.005; double offset_1 = 0.007; double offset_2 = 0.009; 	
+
+        cout<<"BlueBeam"<<endl; //Yellow
         int n0 = 0;
         fstream file0;
-        file0.open(Form("sig_sb_range%d/BlueBeam/aN_raw_sys_bothMethods_%s.txt",range_input,region_input.c_str()),std::ios::in);
-        double xF_val, aN_sig_phi, aN_sig_phi_stat_err, aN_sig_phi_sys_err;
+        file0.open(Form("sig_sb_range%d/BlueBeam/aN_mod_indv_%s_%s_goodChi2.txt",range_input,method_input.c_str(),region_input.c_str()),std::ios::in);
+        double xF_val, aN_sig_phi, aN_sig_phi_err, aN_sig_cosphi, aN_sig_cosphi_err;
         auto gr_phi = new TGraphAsymmErrors(); auto gr_cosphi = new TGraphErrors();
         gr_phi->SetTitle("Raw A_{N} for signal region; xF; A^{raw}_{N}");
-        gr_phi->SetMarkerColor(colorBB); gr_phi->SetLineColor(colorBB); gr_phi->SetMarkerStyle(marker_style); gr_phi->SetMarkerSize(marker_size);
+        gr_phi->SetMarkerColor(colorBB); gr_phi->SetLineColor(colorBB); //Uncomment for Blue Beam
+	//gr_phi->SetMarkerColor(colorYB); gr_phi->SetLineColor(colorYB); //Uncomment for Yellow Beam
+	gr_phi->SetMarkerStyle(marker_style); gr_phi->SetMarkerSize(marker_size);
         gr_cosphi->SetTitle("Raw A_N for signal region - par cos#phi");
-        gr_cosphi->SetMarkerColor(kBlue); gr_cosphi->SetMarkerStyle(20);
-
+        gr_cosphi->SetMarkerColor(kBlue); gr_cosphi->SetMarkerStyle(20); //Uncomment for Blue Beam
+//	gr_cosphi->SetMarkerColor(colorYB); gr_cosphi->SetMarkerStyle(20); //Uncomment for Yellow Beam
+        cout<<"Raw AN"<<endl;
         while(1){
-                file0>>xF_val>>aN_sig_phi>>aN_sig_phi_stat_err>>aN_sig_phi_sys_err;
+                file0>>xF_val>>aN_sig_phi>>aN_sig_phi_err>>aN_sig_cosphi>>aN_sig_cosphi_err;
 		gr_phi->SetPoint(n0, xF_val, aN_sig_phi);
-                gr_phi->SetPointError(n0, 0.0, 0.0, (aN_sig_phi_stat_err/pol), (aN_sig_phi_stat_err/pol));
+                gr_phi->SetPointError(n0, 0.0, 0.0, aN_sig_phi_err, aN_sig_phi_err );
 
-                cout<<n0<<" "<<xF_val<<" "<<aN_sig_phi/pol<<" "<<aN_sig_phi_stat_err/pol<<endl;
+                cout<<n0<<" "<<xF_val<<" "<<aN_sig_phi<<" "<<aN_sig_phi_err<<endl;
                 n0++;
                 if(file0.eof()) break;
         }
@@ -40,39 +48,49 @@ void graph_aN_bkg_pi0_v1(int range_input, string region_input, string method_inp
 
 	int m0 = 0;
 	fstream fnfile0;
-	fnfile0.open(Form("sig_sb_range%d/BlueBeam/aN_pi0_bkg_Levy.txt",range_input), std::ios::in);
+	fnfile0.open(Form("sig_sb_range%d/BlueBeam/aN_pi0_bkg_Levy_%s.txt",range_input,method_input.c_str()), std::ios::in);
 	double xF_val_0, aN_pi0_0, aN_pi0_err_0, aN_bkg_0, aN_bkg_err_0;
-	auto gr_levy = new TGraph(); gr_levy->SetMarkerStyle(23); gr_levy->SetMarkerColor(colorBB);
-
+	auto gr_levy = new TGraphAsymmErrors(); gr_levy->SetMarkerStyle(23); gr_levy->SetMarkerSize(1.2); 
+	gr_levy->SetMarkerColor(colorBB); gr_levy->SetLineColor(colorBB); //Uncomment for Blue Beam
+        //gr_levy->SetMarkerColor(colorYB); //Uncommnet for Yellow Beam
+        cout<<"Levy"<<endl;
 	while(1){
 		fnfile0>>xF_val_0>>aN_pi0_0>>aN_pi0_err_0>>aN_bkg_0>>aN_bkg_err_0;
-		gr_levy->SetPoint(m0, xF_val_0, aN_pi0_0);
+		gr_levy->SetPoint(m0, xF_val_0 + offset_0, aN_pi0_0);
+  		gr_levy->SetPointError(m0, 0.0, 0.0, aN_pi0_err_0, aN_pi0_err_0);
+		cout<<xF_val_0<<" "<<aN_pi0_0<<endl;
 		m0++;
 		if(fnfile0.eof()) break;
 	} fnfile0.close();
 
 	int m1 = 0;
         fstream fnfile1;
-        fnfile1.open(Form("sig_sb_range%d/BlueBeam/aN_pi0_bkg_LogNormal.txt",range_input),std::ios::in);
-        double xF_val_1, aN_pi0_1, aN_pi0_err_1, aN_bkg_1, aN_bkg_err_1;
-        auto gr_lognormal = new TGraph(); gr_lognormal->SetMarkerStyle(22); gr_lognormal->SetMarkerColor(colorBB);
-
+        fnfile1.open(Form("sig_sb_range%d/BlueBeam/aN_pi0_bkg_Cheb_%s.txt",range_input,method_input.c_str()), std::ios::in);
+ 	double xF_val_1, aN_pi0_1, aN_pi0_err_1, aN_bkg_1, aN_bkg_err_1;
+        auto gr_lognormal = new TGraphAsymmErrors(); gr_lognormal->SetMarkerStyle(22); gr_lognormal->SetMarkerColor(colorBB); gr_lognormal->SetMarkerSize(1.2); gr_lognormal->SetLineColor(colorBB);
+	cout<<"Chebyshev"<<endl;
         while(1){
                 fnfile1>>xF_val_1>>aN_pi0_1>>aN_pi0_err_1>>aN_bkg_1>>aN_bkg_err_1;
-                gr_lognormal->SetPoint(m1, xF_val_1, aN_pi0_1);
-                m1++;
+                gr_lognormal->SetPoint(m1, xF_val_1 + offset_1, aN_pi0_1);
+		gr_lognormal->SetPointError(m1, 0.0, 0.0, aN_pi0_err_1, aN_pi0_err_1);
+                cout<<xF_val_1<<" "<<aN_pi0_1<<endl;
+		m1++;
                 if(fnfile1.eof()) break;
         } fnfile1.close();
 
 	int m2 = 0;
         fstream fnfile2;
-        fnfile2.open(Form("sig_sb_range%d/BlueBeam/aN_pi0_bkg_Weibull.txt",range_input), std::ios::in);
+        fnfile2.open(Form("sig_sb_range%d/BlueBeam/aN_pi0_bkg_Weibull_%s.txt",range_input,method_input.c_str()), std::ios::in);
         double xF_val_2, aN_pi0_2, aN_pi0_err_2, aN_bkg_2, aN_bkg_err_2;
-        auto gr_weibull = new TGraph(); gr_weibull->SetMarkerStyle(29); gr_weibull->SetMarkerColor(colorBB);
-
+        auto gr_weibull = new TGraphAsymmErrors(); gr_weibull->SetMarkerStyle(29); gr_weibull->SetMarkerSize(1.2); gr_weibull->SetLineColor(colorBB);
+	gr_weibull->SetMarkerColor(colorBB); //Uncomment for Blue Beam
+        //gr_weibull->SetMarkerColor(colorYB); //Uncomment for Yellow Beam
+	cout<<"Weibull"<<endl;
         while(1){
                 fnfile2>>xF_val_2>>aN_pi0_2>>aN_pi0_err_2>>aN_bkg_2>>aN_bkg_err_2;
-                gr_weibull->SetPoint(m2, xF_val_2, aN_pi0_2);
+                gr_weibull->SetPoint(m2, xF_val_2 + offset_2, aN_pi0_2);
+                gr_weibull->SetPointError(m2, 0.0, 0.0, aN_pi0_err_2, aN_pi0_err_2);
+		cout<<xF_val_2<<" "<<aN_pi0_2<<endl;
                 m2++;
                 if(fnfile2.eof()) break;
         } fnfile2.close();
@@ -131,8 +149,6 @@ void graph_aN_bkg_pi0_v1(int range_input, string region_input, string method_inp
         int m5 = 0;
         fstream fnfile5;
         fnfile5.open(Form("sig_sb_range%d/YellowBeam/aN_pi0_bkg_Weibull.txt",range_input), std::ios::in);
-        double xF_val_y2, aN_pi0_y2, aN_pi0_err_y2, aN_bkg_y2, aN_bkg_err_y2;
-        auto gry_weibull = new TGraph(); gry_weibull->SetMarkerStyle(29); gry_weibull->SetMarkerColor(colorYB);
 
         while(1){
                 fnfile5>>xF_val_y2>>aN_pi0_y2>>aN_pi0_err_y2>>aN_bkg_y2>>aN_bkg_err_y2;
@@ -142,17 +158,34 @@ void graph_aN_bkg_pi0_v1(int range_input, string region_input, string method_inp
         } fnfile5.close();
 */	
 
-	auto mg = new TMultiGraph(); mg->SetTitle("pi0 A_N; xF; A_N");
-	mg->Add(gr_phi); gr_phi->SetTitle("Raw A_N"); 
-	mg->Add(gr_levy); gr_levy->SetTitle("levy");
-	mg->Add(gr_lognormal); gr_lognormal->SetTitle("lognormal"); 
-	mg->Add(gr_weibull); gr_weibull->SetTitle("weibull");
-/*	mg->Add(gr_phi_y); gr_phi_y->SetTitle("Raw A_N");
+	auto mg = new TMultiGraph();
+	mg->Add(gr_phi); gr_phi->SetTitle("Incl. pi0 A_{N} sig. region"); 
+//	mg->Add(gr_levy); gr_levy->SetTitle("pi0 A_{N} levy bg");
+//	mg->Add(gr_lognormal); gr_lognormal->SetTitle("pi0 A_{N} cheb3 bg"); 
+//	mg->Add(gr_weibull); gr_weibull->SetTitle("pi0 A_{N} weibull bg");
+/*	mg->GetXaxis()->SetTitle("x_{F}");
+        mg->GetYaxis()->SetTitle("A_{N}");
+	mg->GetXaxis()->SetLabelSize(0.05);
+        mg->GetYaxis()->SetLabelSize(0.05);
+        mg->SetTitle(Form("pi0 A_{N} %s",method_input.c_str()));
+	mg->Add(gr_phi_y); gr_phi_y->SetTitle("Raw A_N");
 	mg->Add(gry_levy); gry_levy->SetTitle("levy");
 	mg->Add(gry_lognormal); gry_lognormal->SetTitle("lognormal"); 
 	mg->Add(gry_weibull); gry_weibull->SetTitle("weibull");
 */
+
 	TCanvas *c9 = new TCanvas(); mg->Draw("AP");
+// Now that the axes are created, you can access them and set their properties.
+    mg->GetXaxis()->SetTitle("x_{F}");
+    mg->GetYaxis()->SetTitle("A_{N}");
+    
+    mg->GetXaxis()->SetLabelSize(0.05);
+    mg->GetYaxis()->SetLabelSize(0.05);
+    
+    mg->SetTitle("pi0 A_{N} method");
+    
+    // --- Now SetRangeUser() will work correctly ---
+    mg->GetYaxis()->SetRangeUser(-0.007, 0.03);
 
 	c9->BuildLegend();
 
@@ -169,5 +202,10 @@ void graph_aN_bkg_pi0_v1(int range_input, string region_input, string method_inp
         //line.SetLineColor(kRed); // Optional: Set line color
         //line.SetLineWidth(2);    // Optional: Set line width
         line->Draw("same");
+/*
+	TFile *f = TFile::Open(Form("aN_all_range%d.root",range_input),"UPDATE");
+        f->cd();
+        mg->Write(Form("graph_rawaN_pluspi0_test_indvFit_BlueBeam_%s",method_input.c_str()));
 
+*/
 }

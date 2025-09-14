@@ -26,28 +26,28 @@ Double_t fitFunction(Double_t *x, Double_t *par) {
   return weibull_pdf(x,par) + SkGausPeak(x,&par[4]);
 }
 
-void FullFit_Data_BBeam_modRange_xF5bins_Weibull(int xF_val){
+void FullFit_Data_BBeam_modRange_xF5bins_Weibull(int range_input, int xF_val, string beam_input){
 
-  std::ofstream outfile;
-   outfile.open("../sig_sb_range50/BlueBeam/fSig_Weibull.txt", std::ios::app);
 
-   //sig_sb region 0
-   //double sig_Low = 0.10; double sig_High = 0.25; double sb_Low = 0.25; double sb_High = 0.40;  
-   //sig_sb region 1
-   //double sig_Low = 0.10; double sig_High = 0.20; double sb_Low = 0.20; double sb_High = 0.40;
-   //sig_sb region 2
-   //double sig_Low = 0.09; double sig_High = 0.17; double sb_Low = 0.17; double sb_High = 0.40;
-   //sig_sb region 3
-   //double sig_Low = 0.11; double sig_High = 0.21; double sb_Low = 0.21; double sb_High = 0.40;
-   //range50   
-double sig_Low = 0.11; double sig_High = 0.21; double sb_Low_1 = 0.0; double sb_High_1 = 0.11; double sb_Low_2 = 0.21; double sb_High_2 = 0.40; 
+/*  std::ofstream outfile;
+  outfile.open(Form("../sig_sb_range%d/%sBeam/fSig_Weibull.txt",range_input,beam_input.c_str()),std::ios::app);
+*/
+  double sig_Low, sig_High, sb_Low_1, sb_High_1, sb_Low_2, sb_High_2;
+   if(range_input == 50){sb_Low_1 = 0.00; sb_High_1 = 0.08; sig_Low = 0.08; sig_High = 0.19; sb_Low_2 = 0.19; sb_High_2 = 0.40;}
+   if(range_input == 51){sb_Low_1 = 0.00; sb_High_1 = 0.09; sig_Low = 0.09; sig_High = 0.20; sb_Low_2 = 0.20; sb_High_2 = 0.40;}
+   if(range_input == 52){sb_Low_1 = 0.00; sb_High_1 = 0.10; sig_Low = 0.10; sig_High = 0.21; sb_Low_2 = 0.21; sb_High_2 = 0.40;}
+   if(range_input == 53){sb_Low_1 = 0.00; sb_High_1 = 0.11; sig_Low = 0.11; sig_High = 0.22; sb_Low_2 = 0.22; sb_High_2 = 0.40;}
+   if(range_input == 54){sb_Low_1 = 0.00; sb_High_1 = 0.08; sig_Low = 0.08; sig_High = 0.21; sb_Low_2 = 0.21; sb_High_2 = 0.40;}
+   if(range_input == 55){sb_Low_1 = 0.00; sb_High_1 = 0.09; sig_Low = 0.09; sig_High = 0.22; sb_Low_2 = 0.22; sb_High_2 = 0.40;}
+  
 
-  //TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et06pt0_xFTest_1.root");
+//TFile *f = new TFile("../EEmcNanoTreeQA_schedRun15_BlueBeam_160All_Et06pt0_xFTest_1.root");
   //TH1F *h = (TH1F*)f->Get("pi0M_BDown_xF0_phi20");
-   TFile *f = new TFile("../BlueBeam_xF5bins_hists_modRange.root");
+   TFile *f = new TFile(Form("../%sBeam_xF5bins_hists_modRange.root",beam_input.c_str()));
    //TH1F *h = (TH1F*)f->Get("pi0M_YUp_xF3_phi0"); 
    //TH1F *h = (TH1F*)f->Get("BlueBeam_xF3");
-   TH1F *h = (TH1F*)f->Get(Form("pi0M_BAll_xF%d_phi0",xF_val));
+   TH1F *h = (TH1F*)f->Get(Form("pi0M_BAll_xF%d_phi0",xF_val)); h->GetXaxis()->SetTitle("M_{#gamma#gamma} GeV/c^{2}");
+
 
    TF1 *fitFcn = new TF1("fitFcn",fitFunction,0.0,0.4,8);
     fitFcn->SetLineColor(kMagenta);
@@ -168,9 +168,10 @@ else if(xF_val == 4){
    double fbg_sig = backFcn->Integral(sig_Low, sig_High)/fitFcn->Integral(sig_Low, sig_High);
    double fbg_sb = (backFcn->Integral(sb_Low_1, sb_High_1) + backFcn->Integral(sb_Low_2, sb_High_2))/(fitFcn->Integral(sb_Low_1, sb_High_1) + fitFcn->Integral(sb_Low_2, sb_High_2));
 
-   outfile<<fsig_sig<<" "<<fsig_sb<<endl;
+     cout<<fsig_sig<<" "<<fsig_sb<<endl;
+/*   outfile<<fsig_sig<<" "<<fsig_sb<<endl;
    outfile.close();
-
+*/
    TF1* backFcnDraw = (TF1*)backFcn->Clone("backFcnDraw");
    //backFcnDraw->SetRange(0.11, 0.21);
    //backFcnDraw->SetFillColor(2);
@@ -186,7 +187,10 @@ else if(xF_val == 4){
 
 
 //draw the legend
-   TLegend *legend=new TLegend(0.4,0.55,0.88,0.95);
+	TLegend *legend = new TLegend(0.09, 0.68, 0.29, 0.78);
+   legend->SetTextSize(0.04);
+   legend->SetBorderSize(0);
+   legend->SetFillStyle(0);
 /*   legend->SetTextFont(42);
    legend->SetTextSize(0.);
    legend->AddEntry(h,"Data","lpe");
@@ -198,8 +202,8 @@ else if(xF_val == 4){
    //legend->AddEntry(backFcnDraw,"BG in Signal Region","f");
    //legend->AddEntry(backFcnDraw1,"BG in Sideband Region","f");
    legend->AddEntry(signalFcn, "Sig in Signal region", "f");
-*/   legend->AddEntry(h, Form("fsig_sig = %f",fsig_sig),"p");
-   legend->AddEntry(h, Form("fsig_sb = %f",fsig_sb),"p");
+*/   legend->AddEntry((TObject*)0, Form("fsig_{sig} = %f",fsig_sig),"");
+   legend->AddEntry((TObject*)0, Form("fsig_{sb} = %f",fsig_sb),"");
    //legend->AddEntry(h, Form("fbg_sig = %f",fbg_sig),"p");
    //legend->AddEntry(h, Form("fbg_sb = %f",fbg_sb),"p");
    legend->Draw();

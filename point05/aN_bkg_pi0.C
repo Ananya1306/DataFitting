@@ -1,8 +1,8 @@
 //This code just calculates the statistical error
 
-void aN_bkg_pi0(int range_input, string beam_input, string function_input){
+void aN_bkg_pi0(int range_input, string beam_input, string function_input, string method_input){
 
-	const int xFBins = 4;
+	const int xFBins = 5; //4
 	const double pol_blue = 0.5785;
         const double pol_yellow = 0.5872;
 	double aN_sig[xFBins], aN_sig_err[xFBins], aN_sb[xFBins], aN_sb_err[xFBins];
@@ -20,7 +20,7 @@ void aN_bkg_pi0(int range_input, string beam_input, string function_input){
 	int n0 = 0;
 	fstream file0;
 	//file0.open(Form("sig_sb_range%d/%sBeam/aN_raw_sys_bothMethods_sig.txt",range_input,beam_input.c_str()));
-	file0.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_crossRatio_sig_goodChi2.txt",range_input,beam_input.c_str()));
+	file0.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_%s_sig_goodChi2.txt",range_input,beam_input.c_str(),method_input.c_str()));
 	double xF, aN_phi, aN_phierr, aN_cosphi, aN_cosphierr;
 	while(file0>>xF>>aN_phi>>aN_phierr>>aN_cosphi>>aN_cosphierr){
 		
@@ -40,7 +40,7 @@ void aN_bkg_pi0(int range_input, string beam_input, string function_input){
 	int n1 = 0;
         fstream file1;
         //file1.open(Form("sig_sb_range%d/%sBeam/aN_raw_sys_bothMethods_sb.txt",range_input,beam_input.c_str()));
-        file1.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_crossRatio_sb_goodChi2.txt",range_input,beam_input.c_str()));
+        file1.open(Form("sig_sb_range%d/%sBeam/aN_mod_indv_%s_sb_goodChi2.txt",range_input,beam_input.c_str(),method_input.c_str()));
         double xF1, aN_phi1, aN_phierr1, aN_cosphi1, aN_cosphierr1;
         while(file1>>xF1>>aN_phi1>>aN_phierr1>>aN_cosphi1>>aN_cosphierr1){
                 
@@ -78,7 +78,7 @@ void aN_bkg_pi0(int range_input, string beam_input, string function_input){
 	//cout<<endl;
 	cout<<"aN_pi0 and aN_bkg"<<endl;
 	//Calculation of aN_pi0 and aN_bkg starts here
-	ofstream outfile; outfile.open(Form("sig_sb_range%d/%sBeam/aN_pi0_bkg_%s.txt",range_input,beam_input.c_str(),function_input.c_str()));
+	ofstream outfile; outfile.open(Form("sig_sb_range%d/%sBeam/aN_pi0_bkg_%s_%s.txt",range_input,beam_input.c_str(),function_input.c_str(),method_input.c_str()));
 	double aN_pi0[xFBins], aN_bkg[xFBins], aN_pi0_err[xFBins], aN_bkg_err[xFBins];
 
 	for(int i=0; i<xFBins; i++){
